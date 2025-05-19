@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Five Boroughs - Gang Warfare Strategy Game</title>
+  <link rel="stylesheet" href="css/main.css">
+  <link rel="stylesheet" href="css/dark-theme.css">
+  <link rel="stylesheet" href="css/game-board.css">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&family=Roboto+Condensed:wght@400;700&display=swap" rel="stylesheet">
+</head>
+<body>
+  <div id="game-container">
+    <header>
+      <h1>Five Boroughs</h1>
+      <div class="subtitle">Control the streets of New York</div>
+    </header>
+    
+    <main>
+      <div id="game-board-container"></div>
+      
+      <div id="side-panels">
+        <div id="control-panel" class="panel"></div>
+        <div id="gang-panel" class="panel"></div>
+      </div>
+      
+      <div id="bottom-panels">
+        <div id="message-panel" class="panel"></div>
+        <div id="market-panel" class="panel"></div>
+      </div>
+    </main>
+    
+    <footer>
+      <div class="credits">Five Boroughs Gang Warfare Strategy Game</div>
+    </footer>
+  </div>
+
+  <div id="start-screen">
+    <div class="start-content">
+      <h1>Five Boroughs</h1>
+      <p class="tagline">Control the streets of New York in this gang warfare strategy game</p>
+      
+      <div class="start-buttons">
+        <button id="new-game-btn" class="start-button">New Game</button>
+        <button id="load-game-btn" class="start-button">Load Game</button>
+      </div>
+      
+      <div class="game-info">
+        <p>Choose your gang and battle for control of the city across five boroughs.</p>
+        <p>Build your criminal empire through territory control, drug trade, and eliminating rivals.</p>
+        <p>Establish businesses, recruit gang members, and stay one step ahead of the police.</p>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Game scripts -->
+  <script src="js/board.js"></script>
+  <script src="js/gangs.js"></script>
+  <script src="js/combat.js"></script>
+  <script src="js/economy.js"></script>
+  <script src="js/events.js"></script>
+  <script src="js/police.js"></script>
+  <script src="js/save-system.js"></script>
+  <script src="js/ui.js"></script>
+  <script src="js/game.js"></script>
+  <script>
+    // Initialize game when DOM is loaded
+    document.addEventListener('DOMContentLoaded', function() {
+      // Show start screen
+      const startScreen = document.getElementById('start-screen');
+      const gameContainer = document.getElementById('game-container');
+      
+      // Create game instance
+      const fiveBoroughs = new FiveBoroughs();
+      
+      // New game button
+      document.getElementById('new-game-btn').addEventListener('click', function() {
+        startScreen.style.display = 'none';
+        gameContainer.style.display = 'flex';
+        
+        // Show gang selection screen
+        fiveBoroughs.ui = new GameUI(fiveBoroughs);
+        fiveBoroughs.ui.showGangSelectionScreen();
+      });
+      
+      // Load game button
+      document.getElementById('load-game-btn').addEventListener('click', function() {
+        const loadResult = fiveBoroughs.saveSystem.loadGame();
+        
+        if (loadResult.success) {
+          startScreen.style.display = 'none';
+          gameContainer.style.display = 'flex';
+        } else {
+          alert('No saved game found or error loading game.');
+        }
+      });
+      
+      // Disable load button if no save exists
+      if (!fiveBoroughs.saveSystem.hasSaveGame()) {
+        document.getElementById('load-game-btn').disabled = true;
+      }
+    });
+  </script>
+</body>
+</html>

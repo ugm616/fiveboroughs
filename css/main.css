@@ -1,0 +1,966 @@
+/* Main CSS for Five Boroughs game */
+
+/* Base styles */
+:root {
+  --primary-color: #990000;
+  --secondary-color: #d4af37;
+  --text-color: #eaeaea;
+  --background-color: #121212;
+  --panel-bg: #1e1e1e;
+  --border-color: #333;
+  --highlight-color: #d4af37;
+  --success-color: #4caf50;
+  --error-color: #f44336;
+  --info-color: #2196f3;
+  --warning-color: #ff9800;
+  
+  --square-size: 45px;
+  --grid-gap: 2px;
+  
+  /* Borough colors */
+  --manhattan-color: #3a506b;
+  --brooklyn-color: #5e548e;
+  --bronx-color: #606c38;
+  --queens-color: #bc6c25;
+  --staten-island-color: #283618;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: 'Roboto', sans-serif;
+  font-size: 16px;
+  line-height: 1.5;
+  color: var(--text-color);
+  background-color: var(--background-color);
+  overflow-x: hidden;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'Roboto Condensed', sans-serif;
+  margin-bottom: 0.5em;
+}
+
+button {
+  cursor: pointer;
+  font-family: 'Roboto', sans-serif;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 4px;
+  background-color: var(--primary-color);
+  color: white;
+  font-weight: bold;
+  transition: background-color 0.3s;
+}
+
+button:hover {
+  background-color: #c00;
+}
+
+button:disabled {
+  background-color: #555;
+  color: #888;
+  cursor: not-allowed;
+}
+
+/* Layout */
+#game-container {
+  display: none;
+  flex-direction: column;
+  height: 100vh;
+  max-height: 100vh;
+}
+
+header {
+  padding: 10px 20px;
+  background-color: var(--panel-bg);
+  border-bottom: 2px solid var(--border-color);
+  text-align: center;
+}
+
+header h1 {
+  color: var(--secondary-color);
+  margin: 0;
+}
+
+main {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  overflow: hidden;
+  padding: 10px;
+}
+
+#game-board-container {
+  flex: 2;
+  min-height: 400px;
+  position: relative;
+  overflow: hidden;
+  background-color: var(--panel-bg);
+  border-radius: 8px;
+  margin-bottom: 10px;
+}
+
+#side-panels {
+  display: flex;
+  flex: 1;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
+#control-panel, #gang-panel {
+  flex: 1;
+  background-color: var(--panel-bg);
+  border-radius: 8px;
+  padding: 10px;
+  overflow-y: auto;
+}
+
+#bottom-panels {
+  display: flex;
+  flex: 1;
+  gap: 10px;
+}
+
+#message-panel, #market-panel {
+  flex: 1;
+  background-color: var(--panel-bg);
+  border-radius: 8px;
+  padding: 10px;
+  overflow-y: auto;
+}
+
+footer {
+  padding: 10px;
+  background-color: var(--panel-bg);
+  border-top: 2px solid var(--border-color);
+  text-align: center;
+  font-size: 0.9em;
+  color: #888;
+}
+
+/* Control Panel */
+#turn-info {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+  margin-bottom: 15px;
+}
+
+.info-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 5px;
+  background-color: rgba(255, 255, 255, 0.05);
+  border-radius: 4px;
+}
+
+.label {
+  font-weight: bold;
+}
+
+.value {
+  font-family: monospace;
+}
+
+.value.flash {
+  animation: flash 0.5s;
+}
+
+.heat-low {
+  color: var(--success-color);
+}
+
+.heat-medium {
+  color: var(--warning-color);
+}
+
+.heat-high {
+  color: #ff5722;
+}
+
+.heat-critical {
+  color: var(--error-color);
+  font-weight: bold;
+}
+
+.action-button {
+  width: calc(50% - 5px);
+  margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  padding: 10px;
+}
+
+.action-button:nth-child(odd) {
+  margin-right: 10px;
+}
+
+.action-button .icon {
+  margin-right: 8px;
+  font-size: 1.2em;
+}
+
+#game-controls {
+  display: flex;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+#game-controls button {
+  flex: 1;
+}
+
+/* Gang Panel */
+#gang-info {
+  margin-bottom: 15px;
+  padding-bottom: 15px;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.gang-name {
+  font-size: 1.5em;
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+
+.gang-description {
+  font-style: italic;
+  color: #bbb;
+}
+
+#gang-roster h3, #inventory h3 {
+  border-bottom: 1px solid var(--border-color);
+  padding-bottom: 5px;
+  margin-bottom: 10px;
+}
+
+.gang-member {
+  background-color: rgba(255, 255, 255, 0.05);
+  border-radius: 6px;
+  padding: 10px;
+  margin-bottom: 10px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.gang-member:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+.gang-member.selected {
+  background-color: rgba(212, 175, 55, 0.2);
+  border: 1px solid var(--secondary-color);
+}
+
+.member-info {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 5px;
+}
+
+.member-type {
+  font-weight: bold;
+}
+
+.member-lives {
+  margin-bottom: 5px;
+}
+
+.member-location, .member-equipment {
+  font-size: 0.9em;
+  color: #bbb;
+}
+
+.inventory-section {
+  margin-bottom: 15px;
+}
+
+.inventory-section h4 {
+  margin-bottom: 8px;
+  color: #aaa;
+}
+
+.inventory-item {
+  background-color: rgba(255, 255, 255, 0.05);
+  border-radius: 4px;
+  padding: 8px;
+  margin-bottom: 5px;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  cursor: pointer;
+}
+
+.inventory-item:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+.item-name {
+  font-weight: bold;
+  margin-right: 10px;
+}
+
+.item-bonus, .item-quantity, .item-value, .item-income, .item-heat {
+  padding: 2px 6px;
+  border-radius: 3px;
+  font-size: 0.85em;
+  margin-right: 5px;
+}
+
+.item-bonus {
+  background-color: rgba(33, 150, 243, 0.3);
+}
+
+.item-quantity {
+  background-color: rgba(76, 175, 80, 0.3);
+}
+
+.item-value {
+  background-color: rgba(212, 175, 55, 0.3);
+}
+
+.item-income {
+  background-color: rgba(76, 175, 80, 0.3);
+}
+
+.item-heat {
+  background-color: rgba(244, 67, 54, 0.3);
+}
+
+.no-items, .no-boss, .no-members {
+  color: #888;
+  font-style: italic;
+  padding: 5px;
+}
+
+/* Message Panel */
+#message-log {
+  height: 200px;
+  overflow-y: auto;
+  margin-bottom: 10px;
+}
+
+.message {
+  padding: 5px 10px;
+  margin-bottom: 5px;
+  border-radius: 4px;
+  font-size: 0.9em;
+}
+
+.message.info {
+  background-color: rgba(33, 150, 243, 0.1);
+  color: #90caf9;
+}
+
+.message.success {
+  background-color: rgba(76, 175, 80, 0.1);
+  color: #a5d6a7;
+}
+
+.message.error {
+  background-color: rgba(244, 67, 54, 0.1);
+  color: #ef9a9a;
+}
+
+.message.warning {
+  background-color: rgba(255, 152, 0, 0.1);
+  color: #ffcc80;
+}
+
+.message.phase {
+  background-color: rgba(156, 39, 176, 0.1);
+  color: #ce93d8;
+}
+
+.message.event {
+  background-color: rgba(212, 175, 55, 0.1);
+  color: #fff59d;
+}
+
+#phase-indicator {
+  background-color: var(--panel-bg);
+  padding: 10px;
+  border-radius: 6px;
+  border: 1px solid var(--border-color);
+}
+
+.phase-title {
+  font-weight: bold;
+  color: var(--secondary-color);
+  margin-bottom: 5px;
+}
+
+.phase-title.flash {
+  animation: flash 1s;
+}
+
+.phase-description {
+  font-size: 0.9em;
+  color: #bbb;
+}
+
+/* Market Panel */
+.market-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.market-table th, .market-table td {
+  padding: 8px;
+  text-align: left;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.market-table th {
+  color: var(--secondary-color);
+}
+
+.trend-rising, .trend-rising-fast, .trend-falling, .trend-falling-fast, .trend-stable {
+  font-weight: bold;
+}
+
+.trend-rising {
+  color: #4caf50;
+}
+
+.trend-rising-fast {
+  color: #2e7d32;
+}
+
+.trend-falling {
+  color: #f44336;
+}
+
+.trend-falling-fast {
+  color: #b71c1c;
+}
+
+.trend-stable {
+  color: #ffc107;
+}
+
+.buy-btn, .sell-btn {
+  padding: 3px 8px;
+  font-size: 0.85em;
+}
+
+.sell-btn {
+  background-color: #f44336;
+  margin-left: 5px;
+}
+
+.sell-btn:hover {
+  background-color: #d32f2f;
+}
+
+/* Square Info Panel */
+.info-panel {
+  background-color: rgba(30, 30, 30, 0.9);
+  border: 1px solid var(--border-color);
+  border-radius: 6px;
+  padding: 10px;
+  margin-top: 10px;
+}
+
+.info-panel h4 {
+  color: var(--secondary-color);
+  margin-bottom: 10px;
+}
+
+.special-location {
+  color: var(--info-color);
+  font-weight: bold;
+  margin: 5px 0;
+}
+
+.controlling-gang {
+  font-weight: bold;
+  margin: 5px 0;
+}
+
+.present-gangs {
+  margin-top: 15px;
+}
+
+.gang-presence {
+  background-color: rgba(0, 0, 0, 0.2);
+  border-left: 4px solid;
+  padding: 8px;
+  margin-bottom: 8px;
+}
+
+.gang-name {
+  font-weight: bold;
+}
+
+.member-count {
+  font-size: 0.9em;
+  color: #bbb;
+  margin-top: 3px;
+}
+
+.members-list {
+  list-style: none;
+  padding-left: 10px;
+  margin-top: 5px;
+  border-left: 1px dotted #555;
+}
+
+.member-item {
+  font-size: 0.9em;
+  padding: 3px 0;
+}
+
+.member-item.boss {
+  font-weight: bold;
+  color: var(--secondary-color);
+}
+
+.police-presence {
+  margin-top: 15px;
+  background-color: rgba(25, 118, 210, 0.2);
+  border-left: 4px solid #1976d2;
+  padding: 8px;
+}
+
+.police-title {
+  color: #90caf9;
+  font-weight: bold;
+}
+
+.police-count {
+  font-size: 0.9em;
+  color: #bbdefb;
+  margin-top: 3px;
+}
+
+/* Dialogs and Modals */
+#modal-container {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.7);
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.dialog {
+  background-color: var(--panel-bg);
+  border-radius: 8px;
+  min-width: 400px;
+  max-width: 80%;
+  max-height: 90vh;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+  transform: translateY(-20px);
+  opacity: 0;
+  transition: transform 0.3s, opacity 0.3s;
+}
+
+.dialog.active {
+  transform: translateY(0);
+  opacity: 1;
+}
+
+.dialog-title {
+  padding: 15px;
+  font-size: 1.2em;
+  font-weight: bold;
+  border-bottom: 1px solid var(--border-color);
+  position: relative;
+}
+
+.dialog-close {
+  position: absolute;
+  right: 15px;
+  top: 15px;
+  background: none;
+  border: none;
+  font-size: 1.5em;
+  color: #888;
+  cursor: pointer;
+  padding: 0;
+}
+
+.dialog-close:hover {
+  color: #fff;
+}
+
+.dialog-content {
+  padding: 15px;
+  overflow-y: auto;
+  max-height: calc(90vh - 120px);
+}
+
+.dialog-buttons {
+  padding: 10px 15px;
+  border-top: 1px solid var(--border-color);
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+}
+
+/* Dialog content styles */
+.tabs {
+  display: flex;
+  border-bottom: 1px solid var(--border-color);
+  margin-bottom: 15px;
+}
+
+.tab-button {
+  padding: 8px 15px;
+  background: none;
+  border: none;
+  color: #888;
+  cursor: pointer;
+}
+
+.tab-button.active {
+  color: var(--secondary-color);
+  border-bottom: 2px solid var(--secondary-color);
+}
+
+.tab-content {
+  display: none;
+}
+
+.tab-content.active {
+  display: block;
+}
+
+.recruit-options, .business-types-list {
+  display: flex;
+  gap: 15px;
+  margin-top: 15px;
+}
+
+.recruit-option, .business-type {
+  flex: 1;
+  background-color: rgba(255, 255, 255, 0.05);
+  border-radius: 6px;
+  padding: 15px;
+}
+
+.business-type.cannot-afford {
+  opacity: 0.6;
+}
+
+.option-button {
+  width: 100%;
+  margin-top: 10px;
+}
+
+.quantity-selector {
+  display: flex;
+  align-items: center;
+  margin: 15px 0;
+}
+
+.quantity-selector label {
+  margin-right: 10px;
+}
+
+.quantity-selector input {
+  background-color: rgba(255, 255, 255, 0.1);
+  border: 1px solid var(--border-color);
+  color: white;
+  padding: 5px 8px;
+  border-radius: 4px;
+  max-width: 100px;
+}
+
+.total-cost, .total-profit {
+  font-weight: bold;
+  margin-top: 10px;
+  color: var(--secondary-color);
+}
+
+.enemy-list {
+  margin-top: 15px;
+}
+
+.enemy-item {
+  background-color: rgba(255, 255, 255, 0.05);
+  border-radius: 4px;
+  padding: 10px;
+  margin-bottom: 8px;
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.enemy-item:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+.enemy-gang {
+  font-weight: bold;
+}
+
+.enemy-type {
+  font-style: italic;
+  color: #bbb;
+}
+
+/* Context Menu */
+#context-menu {
+  position: absolute;
+  background-color: var(--panel-bg);
+  border: 1px solid var(--border-color);
+  border-radius: 4px;
+  padding: 5px 0;
+  min-width: 150px;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.3);
+  z-index: 1000;
+  opacity: 0;
+  transform: scale(0.95);
+  transform-origin: top left;
+  transition: opacity 0.2s, transform 0.2s;
+  pointer-events: none;
+}
+
+#context-menu.active {
+  opacity: 1;
+  transform: scale(1);
+  pointer-events: all;
+}
+
+.menu-item {
+  padding: 8px 15px;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.menu-item:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+/* Game Over Screen */
+.dialog.victory {
+  border: 2px solid var(--success-color);
+}
+
+.dialog.defeat {
+  border: 2px solid var(--error-color);
+}
+
+.game-over-message {
+  font-size: 1.2em;
+  margin-bottom: 15px;
+  text-align: center;
+}
+
+.game-stats {
+  background-color: rgba(255, 255, 255, 0.05);
+  border-radius: 6px;
+  padding: 15px;
+  margin-top: 15px;
+}
+
+.game-stats h3 {
+  color: var(--secondary-color);
+  margin-bottom: 10px;
+}
+
+.game-stats ul {
+  list-style-position: inside;
+}
+
+.game-stats li {
+  padding: 5px 0;
+}
+
+/* Event Notification */
+.event-notification {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  background-color: rgba(30, 30, 30, 0.95);
+  border-left: 4px solid var(--secondary-color);
+  border-radius: 4px;
+  padding: 15px;
+  min-width: 300px;
+  max-width: 400px;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.3);
+  z-index: 1001;
+  transform: translateX(120%);
+  transition: transform 0.4s ease-out;
+}
+
+.event-notification.active {
+  transform: translateX(0);
+}
+
+.event-notification h3 {
+  color: var(--secondary-color);
+  margin-bottom: 8px;
+}
+
+.event-notification .close-btn {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: none;
+  border: none;
+  font-size: 1.2em;
+  color: #888;
+  cursor: pointer;
+  padding: 0;
+}
+
+/* Cancel action button */
+.cancel-action-button {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  padding: 10px 20px;
+  background-color: #f44336;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  z-index: 100;
+}
+
+.cancel-action-button:hover {
+  background-color: #d32f2f;
+}
+
+/* Start Screen */
+#start-screen {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: var(--background-color);
+  background-image: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url('../assets/images/city-bg.jpg');
+  background-size: cover;
+  background-position: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 2000;
+}
+
+.start-content {
+  text-align: center;
+  background-color: rgba(0, 0, 0, 0.7);
+  padding: 40px;
+  border-radius: 10px;
+  max-width: 600px;
+}
+
+#start-screen h1 {
+  color: var(--secondary-color);
+  font-size: 3em;
+  margin-bottom: 10px;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+.tagline {
+  font-size: 1.2em;
+  margin-bottom: 30px;
+  color: #ddd;
+}
+
+.start-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  margin-bottom: 30px;
+}
+
+.start-button {
+  padding: 12px 30px;
+  font-size: 1.2em;
+}
+
+.game-info {
+  color: #bbb;
+  line-height: 1.6;
+}
+
+/* Gang Selection Screen */
+.gang-selection {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 15px;
+  margin-top: 15px;
+}
+
+.gang-option {
+  background-color: rgba(255, 255, 255, 0.05);
+  border-radius: 6px;
+  padding: 15px;
+  cursor: pointer;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.gang-option:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+  transform: translateY(-3px);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+}
+
+.gang-option .gang-name {
+  font-size: 1.3em;
+  margin-bottom: 5px;
+}
+
+.gang-option .gang-description {
+  margin-bottom: 10px;
+}
+
+.gang-abilities {
+  font-size: 0.9em;
+}
+
+.gang-abilities ul {
+  list-style-position: inside;
+  padding-left: 10px;
+}
+
+.gang-abilities li {
+  padding: 3px 0;
+}
+
+.bonus-text {
+  color: var(--secondary-color);
+  font-style: italic;
+  margin: 10px 0;
+}
+
+/* Animations */
+@keyframes flash {
+  0% { opacity: 1; }
+  50% { opacity: 0.5; }
+  100% { opacity: 1; }
+}
+
+/* Responsive */
+@media (max-width: 1024px) {
+  #side-panels, #bottom-panels {
+    flex-direction: column;
+  }
+  
+  .gang-selection {
+    grid-template-columns: 1fr;
+  }
+  
+  .recruit-options, .business-types-list {
+    flex-direction: column;
+  }
+}
