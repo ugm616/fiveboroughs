@@ -1,0 +1,17 @@
+I want to build a turn based game using a 12 x 12 grid. There will be one human player and 5 computer players. Each player (Human and Computer) will have a home base (a randomly selected square at least 2 square away from any other home base square, both horizontally and orthogonally).
+
+Each player will control a gang. Each turn, they can recruit gang members for money, send gang members to an adjacent square. They can buy and sell drugs (using a system similar to the retro game dope wars), they can buy weapons (so they are more effective in combat), or attempt to recruit new gang members.
+
+Multiple gang members can occupy one square. if 2 opposing gangs members are in the same square, then they will fight each other. If combat, each gang member will have an effectiveness score (Minimum 0, Maximum 10, this can be modified with weapons and other equipment). Each gang member roll get a random number (between 1 & 10) and add this to there effectiveness score. The highest score wins, and the gang member is wounded. Each gang member has 3 lives. they lose a life every time they are wounded. They can get medical treatment to get lives back (up to a maximum of 3). If they lose all there lives, then they are removed from play. Gang member that are paid for have 3 lives, but gang members that are recruited only have 1.
+
+To aim of the game is to take over the entire city (the entire board).
+
+This can be done by killing the boss (The gang member that does not leave the home base) either alone or with allies.
+
+I want to make the gangs all different. I want there to be another computer player for the Police. They would just try to arrest gang members, and try to stop crime. They win if they get rid of all of the gangs.
+
+I want all gangs to be different, have different backgrounds (Biker Gang, Mafia, Yazuka, Mexican gang, crips, bloods, etc)
+
+I want this to run on a website, so it should run with HTML, CSS and JavaScript. I want this game to have a dark look so it's relaxing for the eyes.
+
+What else should we add to this concept? Is there anything we are missing that could make this more enjoyable?
